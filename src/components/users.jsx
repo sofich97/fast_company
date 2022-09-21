@@ -17,30 +17,10 @@ const Users = ({users, ...rest}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    <User key={users}{...rest}/>
+                        {users.map((user) => (
+                            <User key={user._id}{...rest}{...user}/>
+                        ))}
                     </tbody>
-                    {/*<tbody>*/}
-                    {/*{users.map((user) => (*/}
-                    {/*    <tr key={user._id}>*/}
-                    {/*        <td>{user.name}</td>*/}
-                    {/*        {console.log('func',func(user.qualities))}*/}
-                    {/*        <Qualitie name={User(user.qualities)['name']} color={User(user.qualities).color} _id={User(user.qualities)._id}/>*/}
-                    {/*        /!*<td>*!/*/}
-                    {/*        /!*    {user.qualities.map((quality) => (*!/*/}
-                    {/*        /!*        <span*!/*/}
-                    {/*        /!*            key={quality._id}*!/*/}
-                    {/*        /!*            className={`badge bg-${quality.color} m-1`}*!/*/}
-                    {/*        /!*        >*!/*/}
-                    {/*        /!*                {quality.name}*!/*/}
-                    {/*        /!*            </span>*!/*/}
-                    {/*        /!*    ))}*!/*/}
-                    {/*        /!*</td>*!/*/}
-                    {/*        <td>{user.profession.name}</td>*/}
-                    {/*        <td>{user.completedMeetings}</td>*/}
-                    {/*        <td>{`${user.rate}/5`}</td>*/}
-                    {/*    </tr>*/}
-                    {/*))}*/}
-                    {/*</tbody>*/}
                 </table>
             )}
         </>
