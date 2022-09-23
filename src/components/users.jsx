@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import User from "./user";
 import Pagination from "./pagination";
 import paginate from "../utils/paginate";
+import propTypes from "prop-types";
 
 const Users = ({ users, ...rest }) => {
     const count = users.length;
@@ -9,7 +10,6 @@ const Users = ({ users, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const handlePageChange = (pageIndex) => {
-        console.log("page", pageIndex);
         setCurrentPage(pageIndex);
     };
 
@@ -26,7 +26,7 @@ const Users = ({ users, ...rest }) => {
                             <th scope="col">Профессия</th>
                             <th scope="col">Встретиться раз</th>
                             <th scope="col">Оценка</th>
-                            <th scope="col"></th>
+                            <th scope="col"/>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,6 +44,10 @@ const Users = ({ users, ...rest }) => {
             />
         </>
     );
+};
+
+Users.propTypes = {
+    users: propTypes.array.isRequired
 };
 
 export default Users;
