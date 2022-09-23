@@ -1,44 +1,38 @@
 import React from "react";
-import users from "./users";
 
-
-const SearchStatus = ({length}) => {
-
+const SearchStatus = ({ length }) => {
     const renderPhrase = (number) => {
         const lastOne = Number(number.toString().slice(-1));
-        console.log('last one', lastOne);
 
-        if(number > 4 && number < 15) {
-            return `${length} человек тусанет`
+        if (number > 4 && number < 15) {
+            return `${length} человек тусанет`;
         }
-        if([2, 3, 4].indexOf(lastOne) >= 0) {
+        if ([2, 3, 4].indexOf(lastOne) >= 0) {
             return `${length} человека тусанут`;
         }
-        if(lastOne === 1){
-            return `${length} человек тусанет`
+        if (lastOne === 1) {
+            return `${length} человек тусанет`;
         }
         return `${length} человек тусанет`;
-    }
+    };
 
     const getBadgeClasses = () => {
-        let classes = 'badge m-3 ';
-        classes += length === 0 ? 'bg-danger' : 'bg-primary';
+        let classes = "badge m-3 ";
+        classes += length === 0 ? "bg-danger" : "bg-primary";
         return classes;
-    }
+    };
 
     return (
         <>
             <h2>
-                <span
-                    className={getBadgeClasses()}
-                >
+                <span className={getBadgeClasses()}>
                     {length > 0
                         ? `${renderPhrase(length)} с тобой сегодня`
-                        : 'Никто с тобой не тусанет'}
+                        : "Никто с тобой не тусанет"}
                 </span>
             </h2>
         </>
-    )
-}
+    );
+};
 
 export default SearchStatus;
