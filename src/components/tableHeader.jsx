@@ -13,14 +13,15 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
         }
     };
 
-    const classNameSort = () => {
-        if (selectedSort.order === "asc") {
-            return "bi bi-caret-up-fill";
-        } else if (selectedSort.order === "desc") {
-            return "bi bi-caret-down-fill";
-        } else if (selectedSort.order === "") {
-            return " ";
+    const getClassNameSort = (selectedSort, currentPath) => {
+        if (selectedSort.path === currentPath) {
+            if (selectedSort.order === "asc") {
+                return <i className="bi bi-caret-up-fill" />;
+            } else {
+                return <i className="bi bi-caret-down-fill" />;
+            }
         }
+        return null;
     };
 
     return (
@@ -28,8 +29,6 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
             <tr>
                 {Object.keys(columns).map((column) => (
                     <th key={column}
-                        {...{ className: columns[column].path && classNameSort() }}
-                        // className={classNameSort()}
                         onClick={
                             columns[column].path
                                 ? () => handleSort(columns[column].path)
@@ -39,7 +38,7 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
                         scope="col"
                     >
                         { columns[column].name }
-                        {/* { columns[column].order === "asc" ? ad} */}
+                        { getClassNameSort(selectedSort, columns[column].path) }
                     </th>
                 ))}
                 { /* <th scope="col">Качества</th> */ }
