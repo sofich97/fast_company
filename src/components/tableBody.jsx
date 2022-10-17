@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 
 const TableReact = ({ data, columns }) => {
+    // const userId = match.params.userId;
     const renderContent = (item, column) => {
         if (columns[column].component) {
             const component = columns[column].component;
@@ -14,6 +15,12 @@ const TableReact = ({ data, columns }) => {
         return _.get(item, columns[column].path);
     };
 
+    // const getUserInfoById = (id) => {
+    //     return columns.find((column) => column.id === id);
+    // };
+    //
+    // const userInfo = getUserInfoById(userId);
+    // console.log("userInfo tableBody", userInfo);
     return (
         <tbody>
             {data.map((item) => (
