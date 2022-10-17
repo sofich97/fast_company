@@ -1,11 +1,19 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import UserPage from "../components/userPage";
+import UsersList from "../components/usersList";
 
-const UsersNav = () => {
+const Users = () => {
+    const { userId } = useParams();
     return (
         <>
-            <h2>Users</h2>
+            {
+                userId
+                    ? <UserPage userId={userId} />
+                    : <UsersList />
+            }
         </>
     );
 };
 
-export default UsersNav;
+export default Users;
