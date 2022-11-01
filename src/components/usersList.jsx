@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "./pagination";
 import paginate from "../utils/paginate";
-import PropTypes from "prop-types";
 import GroupList from "./groupList";
 import api from "../api/index";
 import SearchStatus from "./searchStatus";
@@ -16,6 +15,7 @@ const UsersList = () => {
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [users, setUsers] = useState();
+    const [searchName, setSearchName] = useState("");
 
     useEffect(() => {
         api.users
@@ -55,7 +55,7 @@ const UsersList = () => {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+    }, [selectedProf, searchName]);
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
@@ -63,28 +63,43 @@ const UsersList = () => {
 
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
+        setSearchName("");
     };
 
     const handleSort = (item) => {
         setSortBy(item);
     };
 
-    const filteredUsers = selectedProf
-        ? users.filter(
-            (user) =>
-                JSON.stringify(user.profession) ===
-                JSON.stringify(selectedProf)
-        )
-        : users;
+    const handleChange = ({ target }) => {
+        setSearchName(target.value);
+        setSelectedProf(undefined);
+        setCurrentPage(1);
+    };
+
     if (users) {
+        const filteredUsers = searchName
+            ? users.filter(
+                (user) => {
+                    const name = user.name.toLowerCase();
+                    const search = searchName.toLowerCase();
+                    return name.indexOf(search) !== -1;
+                }
+            )
+            : selectedProf
+                ? users.filter(
+                    (user) =>
+                        JSON.stringify(user.profession) ===
+                        JSON.stringify(selectedProf)
+                )
+                : users;
+
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
         const clearFilter = () => {
-            setSelectedProf();
+            setSelectedProf(undefined);
+            setSearchName("");
         };
-
-        console.log("users", users.map((user) => user.name));
 
         return (
             <div className="d-flex">
@@ -108,7 +123,7 @@ const UsersList = () => {
 
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
-                    <SearchString users={users}/>
+                    <SearchString onHandleSearch={handleChange} value={searchName}/>
                     {count > 0 && (
                         <UserTable
                             users={userCrop}
@@ -131,10 +146,6 @@ const UsersList = () => {
         );
     }
     return "Loading...";
-};
-
-UsersList.propTypes = {
-    users: PropTypes.array.isRequired
 };
 
 export default UsersList;

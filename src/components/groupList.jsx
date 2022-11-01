@@ -7,7 +7,7 @@ const GroupList = ({ items, valueProperty, contentProperty, onItemSelect, select
             {Array.isArray(items)
                 ? items.map((item) => (
                     <li
-                        key={item.valueProperty}
+                        key={item[valueProperty]}
                         className={"list-group-item" + (item === selectedItem ? " active" : "")}
                         onClick={() => onItemSelect(item)}
                         role="button"
