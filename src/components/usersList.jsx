@@ -1,13 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import Pagination from "./pagination";
 import paginate from "../utils/paginate";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import GroupList from "./groupList";
 import api from "../api/index";
 import SearchStatus from "./searchStatus";
 import UserTable from "./userTable";
 import _ from "lodash";
+import SearchString from "./searchString";
 
 const UsersList = () => {
     const pageSize = 8;
@@ -84,6 +84,8 @@ const UsersList = () => {
             setSelectedProf();
         };
 
+        console.log("users", users.map((user) => user.name));
+
         return (
             <div className="d-flex">
                 {professions && (
@@ -106,6 +108,7 @@ const UsersList = () => {
 
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <SearchString users={users}/>
                     {count > 0 && (
                         <UserTable
                             users={userCrop}
@@ -131,7 +134,7 @@ const UsersList = () => {
 };
 
 UsersList.propTypes = {
-    users: propTypes.array.isRequired
+    users: PropTypes.array.isRequired
 };
 
 export default UsersList;
