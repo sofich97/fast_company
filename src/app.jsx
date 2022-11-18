@@ -11,8 +11,8 @@ const App = () => {
             <NavBar />
             <Switch>
                 <Route path="/" component={ Main } exact />
-                <Route path="/login" component={ Login } />
-                <Route path="/users/:userId?" component={ Users } />
+                <Route path="/login/:type?" component={ Login } />
+                <Route path="/users/:userId?/:edit?" component={ Users } />
                 <Redirect to="/" />
             </Switch>
         </div>
