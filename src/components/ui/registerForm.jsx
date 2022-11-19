@@ -17,7 +17,7 @@ const RegisterForm = () => {
         license: false
     });
     const [errors, setErrors] = useState({});
-    const [professions, setProfessions] = useState();
+    const [professions, setProfessions] = useState([]);
     const [qualities, setQualities] = useState([]);
 
     useEffect(() => {
@@ -34,12 +34,13 @@ const RegisterForm = () => {
         api.qualities
             .fetchAll()
             .then((data) => {
+                const qualitiesList =
                 Object.keys(data).map((optionName) => ({
                     label: data[optionName].name,
                     value: data[optionName]._id,
                     color: data[optionName].color
                 }));
-                setQualities(qualities);
+                setQualities(qualitiesList);
             });
     }, []);
 
