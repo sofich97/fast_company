@@ -6,7 +6,7 @@ import MultiSelectField from "../../common/form/multiSelectField";
 import api from "../../../api";
 import { useHistory } from "react-router-dom";
 
-const EditPage = () => {
+const EditPage = (userId) => {
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -49,13 +49,41 @@ const EditPage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(data);
+    const getProfessionById = (id) => {
+        for (const prof of professions) {
+            if (prof.value === id) {
+                return { _id: prof.value, name: prof.label };
+            }
+        }
     };
 
-    const handleClick = () => {
-        history.goBack("/users");
+    const getQualities = (elements) => {
+        const qualitiesArray = [];
+        for (const elem of elements) {
+            for (const quality in qualities) {
+                if (elem.value === qualities[quality].value) {
+                    qualitiesArray.push({
+                        _id: qualities[quality].value,
+                        name: qualities[quality].label,
+                        color: qualities[quality].color
+                    });
+                }
+            }
+        }
+        return qualitiesArray;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const { profession, qualities } = data;
+        const updateData = {
+            ...data,
+            profession: getProfessionById(profession),
+            qualities: getQualities(qualities)
+        };
+        api.users.update(userId, updateData).then(() => {
+            history.goBack();
+        });
     };
 
     return (
@@ -99,7 +127,7 @@ const EditPage = () => {
                 label="Choose your qualities"
                 defaultValue={data.qualities}
             />
-            <button className="btn btn-primary w-100 mx-auto" type="submit" onClick={ handleClick }>Обновить</button>
+            <button className="btn btn-primary w-100 mx-auto" type="submit">Обновить</button>
         </form>
     );
 };
