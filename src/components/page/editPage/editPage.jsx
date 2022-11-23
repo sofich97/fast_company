@@ -6,7 +6,7 @@ import MultiSelectField from "../../common/form/multiSelectField";
 import api from "../../../api";
 import { useHistory } from "react-router-dom";
 
-const EditPage = (userId) => {
+const EditPage = ({ userId }) => {
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -16,9 +16,27 @@ const EditPage = (userId) => {
     });
     const [professions, setProfessions] = useState([]);
     const [qualities, setQualities] = useState([]);
+    const [isLoading, setLoading] = useState(false);
     const history = useHistory();
 
+    const transformQualities = (qualities) => {
+        return qualities.map((quality) => ({
+            label: quality.name,
+            value: quality._id
+        }));
+    };
+
     useEffect(() => {
+        api.users.getById(userId).then(({ profession, qualities, ...data }) => {
+            setData((prevState) => ({
+                ...prevState,
+                ...data,
+                profession: profession._id,
+                qualities: transformQualities(qualities)
+            }));
+            setLoading(true);
+        });
+
         api.professions
             .fetchAll()
             .then((data) => {
@@ -40,7 +58,13 @@ const EditPage = (userId) => {
                     }));
                 setQualities(qualitiesList);
             });
-    }, []);
+    }, [userId]);
+
+    useEffect(() => {
+        if (data._id) {
+            setLoading(false);
+        }
+    }, [data]);
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -86,7 +110,7 @@ const EditPage = (userId) => {
         });
     };
 
-    return (
+    return !isLoading && professions.length ? (
         <form
             className="col-md-6 offset-md-3 p-4" onSubmit={handleSubmit}>
             <TextField
@@ -120,15 +144,19 @@ const EditPage = (userId) => {
                 onChange={handleChange}
                 label="Choose your sex"
             />
-            <MultiSelectField
-                options={qualities}
-                onChange={handleChange}
-                name="qualities"
-                label="Choose your qualities"
-                defaultValue={data.qualities}
-            />
+            {qualities.length > 0 && (
+                <MultiSelectField
+                    options={qualities}
+                    onChange={handleChange}
+                    name="qualities"
+                    label="Choose your qualities"
+                    defaultValue={data.qualities}
+                />
+            )}
             <button className="btn btn-primary w-100 mx-auto" type="submit">Обновить</button>
         </form>
+    ) : (
+        "Loading..."
     );
 };
 
