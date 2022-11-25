@@ -4,9 +4,11 @@ import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import api from "../../../api";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
-const EditPage = ({ userId }) => {
+const EditPage = () => {
+    const { userId } = useParams();
+    const history = useHistory();
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -16,8 +18,7 @@ const EditPage = ({ userId }) => {
     });
     const [professions, setProfessions] = useState([]);
     const [qualities, setQualities] = useState([]);
-    const [isLoading, setLoading] = useState(false);
-    const history = useHistory();
+    const [isLoading, setIsLoading] = useState(false);
 
     const transformQualities = (qualities) => {
         return qualities.map((quality) => ({
@@ -27,15 +28,15 @@ const EditPage = ({ userId }) => {
     };
 
     useEffect(() => {
-        api.users.getById(userId).then(({ profession, qualities, ...data }) => {
+        setIsLoading(true);
+        api.users.getById(userId).then(({ profession, qualities, ...data }) =>
             setData((prevState) => ({
                 ...prevState,
                 ...data,
                 profession: profession._id,
                 qualities: transformQualities(qualities)
-            }));
-            setLoading(true);
-        });
+            }))
+        );
 
         api.professions
             .fetchAll()
@@ -58,11 +59,11 @@ const EditPage = ({ userId }) => {
                     }));
                 setQualities(qualitiesList);
             });
-    }, [userId]);
+    }, []);
 
     useEffect(() => {
         if (data._id) {
-            setLoading(false);
+            setIsLoading(false);
         }
     }, [data]);
 

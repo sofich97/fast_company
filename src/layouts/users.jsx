@@ -5,16 +5,16 @@ import UsersListPage from "../components/page/userListPage/usersListPage";
 import EditPage from "../components/page/editPage/editPage";
 
 const Users = () => {
-    const { userId } = useParams();
-    const { edit } = useParams();
+    const params = useParams();
+    const { userId, edit } = params;
 
     return (
         <>
             {
                 userId
                     ? edit
-                    ? <EditPage userId={userId} />
-                    : <UserPage userId={userId} />
+                        ? <EditPage />
+                        : <UserPage userId={userId} />
                     : <UsersListPage />
             }
         </>
