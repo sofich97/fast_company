@@ -112,9 +112,20 @@ const EditPage = () => {
         });
     };
 
+    const handleClickReturn = (e) => {
+        e.preventDefault();
+        history.goBack();
+    };
+
     return !isLoading && professions.length ? (
         <>
-            <button className="offset-sm-2 btn btn-primary" type="submit"><BiLeftArrow />Назад</button>
+            <button
+                className="offset-sm-2 btn btn-primary"
+                type="submit"
+                onClick={handleClickReturn}
+            >
+                <BiLeftArrow />Назад
+            </button>
             <form
                 className="col-md-6 offset-md-3 p-4" onSubmit={handleSubmit}>
                 <TextField
