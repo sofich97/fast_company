@@ -5,6 +5,7 @@ import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import api from "../../../api";
 import { useHistory, useParams } from "react-router-dom";
+import { BiLeftArrow } from "react-icons/bi";
 
 const EditPage = () => {
     const { userId } = useParams();
@@ -112,50 +113,53 @@ const EditPage = () => {
     };
 
     return !isLoading && professions.length ? (
-        <form
-            className="col-md-6 offset-md-3 p-4" onSubmit={handleSubmit}>
-            <TextField
-                label="Имя"
-                onChange={handleChange}
-                value={data.name}
-                name="name"
-            />
-            <TextField
-                label="Электронная почта"
-                onChange={handleChange}
-                name="email"
-                value={data.email}
-            />
-            <SelectField
-                defaultOption="Choose..."
-                label="Выберите вашу профессию"
-                value={data.profession}
-                name="profession"
-                onChange={handleChange}
-                options={professions}
-            />
-            <RadioField
-                options={ [
-                    { name: "Male", value: "male" },
-                    { name: "Female", value: "female" },
-                    { name: "Other", value: "other" }
-                ] }
-                value={data.sex}
-                name="sex"
-                onChange={handleChange}
-                label="Choose your sex"
-            />
-            {qualities.length > 0 && (
-                <MultiSelectField
-                    options={qualities}
+        <>
+            <button className="offset-sm-2 btn btn-primary" type="submit"><BiLeftArrow />Назад</button>
+            <form
+                className="col-md-6 offset-md-3 p-4" onSubmit={handleSubmit}>
+                <TextField
+                    label="Имя"
                     onChange={handleChange}
-                    name="qualities"
-                    label="Choose your qualities"
-                    defaultValue={data.qualities}
+                    value={data.name}
+                    name="name"
                 />
-            )}
-            <button className="btn btn-primary w-100 mx-auto" type="submit">Обновить</button>
-        </form>
+                <TextField
+                    label="Электронная почта"
+                    onChange={handleChange}
+                    name="email"
+                    value={data.email}
+                />
+                <SelectField
+                    defaultOption="Choose..."
+                    label="Выберите вашу профессию"
+                    value={data.profession}
+                    name="profession"
+                    onChange={handleChange}
+                    options={professions}
+                />
+                <RadioField
+                    options={ [
+                        { name: "Male", value: "male" },
+                        { name: "Female", value: "female" },
+                        { name: "Other", value: "other" }
+                    ] }
+                    value={data.sex}
+                    name="sex"
+                    onChange={handleChange}
+                    label="Choose your sex"
+                />
+                {qualities.length > 0 && (
+                    <MultiSelectField
+                        options={qualities}
+                        onChange={handleChange}
+                        name="qualities"
+                        label="Choose your qualities"
+                        defaultValue={data.qualities}
+                    />
+                )}
+                <button className="btn btn-primary w-100 mx-auto" type="submit">Обновить</button>
+            </form>
+        </>
     ) : (
         "Loading..."
     );
